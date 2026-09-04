@@ -1,5 +1,6 @@
 from datetime import date
 import time
+import os
 name=input("Enter User name:")
 
 print(f"Hello {name}! i am your personal AI Assitant")
@@ -43,5 +44,9 @@ elif command=="calculator":
 
 elif command=="exit":
     print("Goodbye")
+
+elif command=="notepad":
+    os.system("notepad")
+
 else:
     print("I dont understand this command")
