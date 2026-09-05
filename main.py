@@ -62,6 +62,7 @@ elif command=="create folder":
     folder=input("Enter folder name:")
     os.makedirs(folder)
     print("Folder Created")
+
 elif command=="copy file":
     source_file=input("Enter source file:")
     if not os.path.exists(source_file):
@@ -81,14 +82,14 @@ elif command=="copy file":
                     except Exception as e:
                                      print(e)
             else:
-                 print("NOT COPIED")
+                 print("NOT COPIED")           
 elif command=="move file":
     source_file=input("Enter source file:")
     if not os.path.exists(source_file):
         print("source file doesn't exists,create file first")
     else:
-       destination_folder=input("Enter destination folder:")
-       if not os.path.exists(destination_folder):
+        destination_folder=input("Enter destination folder:")
+        if not os.path.exists(destination_folder):
             print("Destination folder doesn't exists")
 
         
@@ -102,9 +103,24 @@ elif command=="move file":
             else:
                 print("Thanks")
                 
-       else:
-             shutil.move(source_file,destination_folder)
-             print("File Moved")
+        else:
+            shutil.move(source_file,destination_folder)
+            print("File Moved")
+
+elif command=="add note":
+    note=input("Enter your note:")
+    with open("data2.txt","a") as f:
+        f.write(note)
+elif command=="show notes":
+    with open("data2.txt","r")as f:
+       notes=f.readlines()
+    if len(notes)==0:
+         print("No note yet")
+    else:
+         print("---Your Notes---")
+         for index,i in enumerate(notes,start=1):
+              print(f"{index}:{i.strip()}")
+    
     
       
             
