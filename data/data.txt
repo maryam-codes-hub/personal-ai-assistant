@@ -73,7 +73,7 @@ elif command=="copy file":
         else: 
             print("WARNING:Destination file overwriting")
 
-            if(user_input:=input("Do you want to overwrite (Y/N):")).upper()=="Y":
+            if(user_input:=input("Do you want to overwrite (Y/N)")).upper()=="Y":
                     try:
                 
                                shutil.copy(source_file,destination_file)
@@ -82,31 +82,6 @@ elif command=="copy file":
                                      print(e)
             else:
                  print("NOT COPIED")
-elif command=="move file":
-    source_file=input("Enter source file:")
-    if not os.path.exists(source_file):
-        print("source file doesn't exists,create file first")
-    else:
-       destination_folder=input("Enter destination folder:")
-       if not os.path.exists(destination_folder):
-            print("Destination folder doesn't exists")
-
-        
-            if(user_input:=input("Do you want to create folder (Y/N):")).upper()=="Y":
-                
-                os.mkdir(destination_folder)
-                print("Folder Created")
-                shutil.move(source_file,destination_folder)
-                print("File Moved")
-                            
-            else:
-                print("Thanks")
-                
-       else:
-             shutil.move(source_file,destination_folder)
-             print("File Moved")
-    
-      
             
             
 
