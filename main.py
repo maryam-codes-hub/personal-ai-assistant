@@ -154,6 +154,33 @@ while True:
                      print(f"searching for: {query}")
                      search_url="https://www.google.com/search?q=" +query.replace(" ","+")
                      webbrowser.open(search_url)
+
+    elif "time" in command:
+        current=time.ctime()
+        
+        print(f"Current time is :{current}")
+  
+    elif ("launch" in command or "open " in command) and "google" in command:
+            webbrowser.open("https://www.google.com/")
+    elif ("launch" in command or "open " in command) and "youtube" in command:
+
+        print("opening....")
+        webbrowser.open("https://www.youtube.com/")
+
+    elif command=="delete file":
+        file_name=input("Which file do you want to delete:")
+        if os.path.exists(file_name):
+            os.remove(file_name)
+        else:
+            print("File not found")
+    elif command=="delete folder":
+            folder_name=input("Which folder do you want to delete:")
+            if os.path.exists(folder_name):
+                os.rmdir(folder_name)
+            else:
+                print("Folder not found")
+      
+
  
     
     
