@@ -3,7 +3,7 @@ import time
 import os
 import shutil
 import threading
-
+import webbrowser
 def reminder(m,s):
         print("Reminder set!")
              
@@ -134,16 +134,27 @@ while True:
               print(f"{index}:{i.strip()}")
 
 
-
-
-
-
     elif command=="reminder":
      message=input("What should i remind you about?")
      seconds=int(input("After how many seconds?"))
     
      thread=threading.Thread(target=reminder,args=(message,seconds)) 
      thread.start() 
+
+    elif command=="open google":
+        
+        print("opening google.....")
+        webbrowser.open("https://www.google.com/")
+       
+    elif command=="open youtube":
+       print("opening youtube.....")
+       webbrowser.open("https://www.youtube.com/")
+    elif command.startswith("search"):
+                     query=command[7:]
+                     print(f"searching for: {query}")
+                     search_url="https://www.google.com/search?q=" +query.replace(" ","+")
+                     webbrowser.open(search_url)
+ 
     
     
       
@@ -152,4 +163,4 @@ while True:
 
 
     else:
-      print("I dont understand this command")
+      print("I don't understand this command")
