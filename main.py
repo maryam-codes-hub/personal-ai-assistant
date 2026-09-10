@@ -71,34 +71,15 @@ def reminder(m, s):
 
     time.sleep(s)
 
-    print(f"HEY {name}!! It's time to {m}")
+    print(f"HEY !! It's time to {m}")
 
 
-name = input("Enter User name: ")
+def notepad():
 
-print(f"Hello {name}! I am your personal AI Assistant")
-
-
-while True:
-
-    command = input("Enter Command: ").lower()
-
-    intent = detect_intent(command)
-
-    if intent == "TIME":
-
-        current = time.ctime()
-        print(f"Current time is: {current}")
+      os.system("notepad")
 
 
-    elif intent == "DATE":
-
-        today = date.today()
-        print(f"Today's date: {today}")
-
-
-    elif intent == "CALCULATOR":
-
+def calculator():
         print("WELCOME")
 
         a = int(input("Enter First Number: "))
@@ -145,232 +126,255 @@ while True:
         else:
             print("Invalid Choice")
 
+def get_time():
+    current = time.ctime()
+    print(f"Current time is: {current}")
 
-    elif intent == "EXIT":
 
-        print("Goodbye")
-        break
+def get_date():
+    today = date.today()
+    print(f"Today's date: {today}")
 
 
-    elif intent == "NOTEPAD":
+def list_files():
+    print(os.listdir())
 
-        os.system("notepad")
 
+def create_file():
+    file = input("Enter file name: ")
 
-    elif intent == "LIST FILES":
+    with open(file, "w") as f:
+        pass
 
-        print(os.listdir())
+    print("File created:", os.path.exists(file))
 
 
-    elif intent == "CREATE FILE":
+def create_folder():
+    folder = input("Enter folder name: ")
+    os.makedirs(folder)
+    print("Folder Created")
 
-        file = input("Enter file name: ")
 
-        with open(file, "w") as f:
-            pass
+def copy_file():
+    source_file = input("Enter source file: ")
 
-        print("File created:", os.path.exists(file))
+    if not os.path.exists(source_file):
+        print("Source file doesn't exist")
+        return
 
+    destination_file = input("Enter destination file: ")
 
-    elif intent == "CREATE FOLDER":
+    if not os.path.exists(destination_file):
+        print("Destination doesn't exist")
 
-        folder = input("Enter folder name: ")
+        try:
+            shutil.copy(source_file, destination_file)
+            print("File Copied")
 
-        os.makedirs(folder)
-
-        print("Folder Created")
-
-
-    elif intent == "COPY FILE":
-
-        source_file = input("Enter source file: ")
-
-        if not os.path.exists(source_file):
-
-            print("Source file doesn't exist")
-
-        else:
-
-            destination_file = input("Enter destination file: ")
-
-            if not os.path.exists(destination_file):
-
-                print("Destination doesn't exist")
-
-                try:
-                    shutil.copy(source_file, destination_file)
-                    print("File Copied")
-
-                except Exception as e:
-                    print(e)
-
-            else:
-
-                print("WARNING: Destination file already exists")
-
-                user_input = input(
-                    "Do you want to overwrite? (Y/N): "
-                ).upper()
-
-                if user_input == "Y":
-
-                    try:
-                        shutil.copy(source_file, destination_file)
-                        print("File Copied")
-
-                    except Exception as e:
-                        print(e)
-
-                else:
-                    print("NOT COPIED")
-
-
-    elif intent == "MOVE FILE":
-
-        source_file = input("Enter source file: ")
-
-        if not os.path.exists(source_file):
-
-            print("Source file doesn't exist, create file first")
-
-        else:
-
-            destination_folder = input("Enter destination folder: ")
-
-            if not os.path.exists(destination_folder):
-
-                print("Destination folder doesn't exist")
-
-                user_input = input(
-                    "Do you want to create folder? (Y/N): "
-                ).upper()
-
-                if user_input == "Y":
-
-                    os.mkdir(destination_folder)
-
-                    print("Folder Created")
-
-                    shutil.move(source_file, destination_folder)
-
-                    print("File Moved")
-
-                else:
-
-                    print("Thanks")
-
-            else:
-
-                shutil.move(source_file, destination_folder)
-
-                print("File Moved")
-
-
-    elif intent == "ADD NOTE":
-
-        note = input("Enter your note: ")
-
-        with open("data2.txt", "a") as f:
-            f.write(note + "\n")
-
-        print("Note saved!")
-
-
-    elif intent == "SHOW NOTES":
-
-        if not os.path.exists("data2.txt"):
-
-            print("No notes yet")
-
-        else:
-
-            with open("data2.txt", "r") as f:
-                notes = f.readlines()
-
-            if len(notes) == 0:
-
-                print("No notes yet")
-
-            else:
-
-                print("--- Your Notes ---")
-
-                for index, i in enumerate(notes, start=1):
-                    print(f"{index}: {i.strip()}")
-
-
-    elif intent == "REMINDER":
-
-        message = input("What should I remind you about? ")
-
-        seconds = int(input("After how many seconds? "))
-
-        thread = threading.Thread(
-            target=reminder,
-            args=(message, seconds)
-        )
-
-        thread.start()
-
-
-    elif intent == "OPEN GOOGLE":
-
-        print("Opening Google.....")
-
-        webbrowser.open("https://www.google.com/")
-
-
-    elif intent == "OPEN YOUTUBE":
-
-        print("Opening YouTube.....")
-
-        webbrowser.open("https://www.youtube.com/")
-
-
-    elif intent == "SEARCH":
-
-        query = command[7:]
-
-        print(f"Searching for: {query}")
-
-        search_url = (
-            "https://www.google.com/search?q="
-            + query.replace(" ", "+")
-        )
-
-        webbrowser.open(search_url)
-
-
-    elif intent == "DELETE FILE":
-
-        file_name = input("Which file do you want to delete: ")
-
-        if os.path.exists(file_name):
-
-            os.remove(file_name)
-
-            print("File deleted")
-
-        else:
-
-            print("File not found")
-
-
-    elif intent == "DELETE FOLDER":
-
-        folder_name = input("Which folder do you want to delete: ")
-
-        if os.path.exists(folder_name):
-
-            os.rmdir(folder_name)
-
-            print("Folder deleted")
-
-        else:
-
-            print("Folder not found")
-
+        except Exception as e:
+            print(e)
 
     else:
+        print("WARNING: Destination file already exists")
 
-        print("I don't understand this command")
+        user_input = input(
+            "Do you want to overwrite? (Y/N): "
+        ).upper()
+
+        if user_input == "Y":
+            try:
+                shutil.copy(source_file, destination_file)
+                print("File Copied")
+
+            except Exception as e:
+                print(e)
+
+        else:
+            print("NOT COPIED")
+
+
+def move_file():
+    source_file = input("Enter source file: ")
+
+    if not os.path.exists(source_file):
+        print("Source file doesn't exist, create file first")
+        return
+
+    destination_folder = input("Enter destination folder: ")
+
+    if not os.path.exists(destination_folder):
+        print("Destination folder doesn't exist")
+
+        user_input = input(
+            "Do you want to create folder? (Y/N): "
+        ).upper()
+
+        if user_input == "Y":
+            os.mkdir(destination_folder)
+            print("Folder Created")
+
+            shutil.move(source_file, destination_folder)
+            print("File Moved")
+
+        else:
+            print("Thanks")
+
+    else:
+        shutil.move(source_file, destination_folder)
+        print("File Moved")
+
+
+def add_note():
+    note = input("Enter your note: ")
+
+    with open("data2.txt", "a") as f:
+        f.write(note + "\n")
+
+    print("Note saved!")
+
+
+def show_notes():
+    if not os.path.exists("data2.txt"):
+        print("No notes yet")
+        return
+
+    with open("data2.txt", "r") as f:
+        notes = f.readlines()
+
+    if len(notes) == 0:
+        print("No notes yet")
+        return
+
+    print("--- Your Notes ---")
+
+    for index, i in enumerate(notes, start=1):
+        print(f"{index}: {i.strip()}")
+
+
+def set_reminder():
+    message = input("What should I remind you about? ")
+    seconds = int(input("After how many seconds? "))
+
+    thread = threading.Thread(
+        target=reminder,
+        args=(message, seconds)
+    )
+
+    thread.start()
+
+
+def open_google():
+    print("Opening Google.....")
+    webbrowser.open("https://www.google.com/")
+
+
+def open_youtube():
+    print("Opening YouTube.....")
+    webbrowser.open("https://www.youtube.com/")
+
+
+def search_web(command):
+    query = command[7:]
+
+    print(f"Searching for: {query}")
+
+    search_url = (
+        "https://www.google.com/search?q="
+        + query.replace(" ", "+")
+    )
+
+    webbrowser.open(search_url)
+
+
+def delete_file():
+    file_name = input("Which file do you want to delete: ")
+
+    if os.path.exists(file_name):
+        os.remove(file_name)
+        print("File deleted")
+    else:
+        print("File not found")
+
+
+def delete_folder():
+    folder_name = input("Which folder do you want to delete: ")
+
+    if os.path.exists(folder_name):
+        os.rmdir(folder_name)
+        print("Folder deleted")
+    else:
+        print("Folder not found")
+def main():
+   name = input("Enter User name: ")
+
+   print(f"Hello {name}! I am your personal AI Assistant")
+
+
+   while True:
+
+      command = input("Enter Command:").lower()
+
+      intent = detect_intent(command)
+
+
+      if intent == "TIME":
+            get_time()
+
+      elif intent == "DATE":
+            get_date()
+
+      elif intent == "CALCULATOR":
+            calculator()
+
+      elif intent == "EXIT":
+            print("Goodbye")
+            break
+
+      elif intent == "NOTEPAD":
+            notepad()
+
+      elif intent == "LIST FILES":
+            list_files()
+
+      elif intent == "CREATE FILE":
+            create_file()
+
+      elif intent == "CREATE FOLDER":
+            create_folder()
+
+      elif intent == "COPY FILE":
+            copy_file()
+
+      elif intent == "MOVE FILE":
+            move_file()
+
+      elif intent == "ADD NOTE":
+            add_note()
+
+      elif intent == "SHOW NOTES":
+            show_notes()
+
+      elif intent == "REMINDER":
+            set_reminder()
+
+      elif intent == "OPEN GOOGLE":
+            open_google()
+
+      elif intent == "OPEN YOUTUBE":
+            open_youtube()
+
+      elif intent == "SEARCH":
+          search_web(command)
+
+      elif intent == "DELETE FILE":
+            delete_file()
+
+      elif intent == "DELETE FOLDER":
+            delete_folder()
+
+      else:
+            print("I don't understand this command")
+
+
+if __name__ == "__main__":
+    main()
