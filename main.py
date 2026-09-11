@@ -8,6 +8,22 @@ import webbrowser
 
 def detect_intent(command):
     intent = None
+    is_open=(
+        "launch" in command or "open" in command or "go to" in command
+        or "start"  in command
+    )
+    is_create=(
+        "create" in command or "make" in command or "new" in command
+    )
+    is_delete=(
+        "delete" in command or "remove" in command
+    )
+    is_show=(
+       "show" in command or "view" in command or "display" in command or "list" in command
+    )
+    is_exit=(
+        "exit" in command or "quit" in command or "bye" in command
+    )
 
     if "time" in command:
         intent = "TIME"
@@ -15,31 +31,32 @@ def detect_intent(command):
     elif "date" in command:
         intent = "DATE"
 
-    elif ("launch" in command or "open " in command) and "calculator" in command:
+    elif is_open and "calculator" in command:
         intent = "CALCULATOR"
 
-    elif ("launch" in command or "open " in command) and "notepad" in command:
+    elif is_open and "notepad" in command:
         intent = "NOTEPAD"
 
-    elif ("show" in command or "give" in command or "list" in command) and "file" in command:
+    elif is_show and "file" in command:
         intent = "LIST FILES"
-
-    elif ("launch" in command or "open " in command) and "google" in command:
+    elif command.startswith("search "):
+             intent = "SEARCH"
+    elif is_open and "google" in command:
         intent = "OPEN GOOGLE"
 
-    elif ("launch" in command or "open " in command) and "youtube" in command:
+    elif is_open and "youtube" in command:
         intent = "OPEN YOUTUBE"
 
-    elif ("delete" in command or "remove" in command) and "file" in command:
+    elif is_delete and "file" in command:
         intent = "DELETE FILE"
 
-    elif ("delete" in command or "remove" in command) and "folder" in command:
+    elif is_delete and "folder" in command:
         intent = "DELETE FOLDER"
 
-    elif ("create" in command or "make" in command) and "folder" in command:
+    elif is_create and "folder" in command:
         intent = "CREATE FOLDER"
 
-    elif ("create" in command or "make" in command) and "file" in command:
+    elif is_create and "file" in command:
         intent = "CREATE FILE"
 
     elif ("copy" in command or "duplicate" in command) and "file" in command:
@@ -51,22 +68,19 @@ def detect_intent(command):
     elif ("add" in command or "write" in command or "save" in command) and "note" in command:
         intent = "ADD NOTE"
 
-    elif ("show" in command or "view" in command or "display" in command) and "note" in command:
+    elif is_show and "note" in command:
         intent = "SHOW NOTES"
 
     elif "reminder" in command or "remind" in command:
         intent = "REMINDER"
 
-    elif command.startswith("search "):
-        intent = "SEARCH"
-
-    elif "exit" in command or "quit" in command or "bye" in command:
+    elif is_exit:
         intent = "EXIT"
 
     return intent
 
 
-def reminder(m, s):
+def reminder(m,s):
     print("Reminder set!")
 
     time.sleep(s)
@@ -312,9 +326,10 @@ def main():
 
    while True:
 
-      command = input("Enter Command:").lower()
+      command = input("Enter Command:").lower().strip()
+      command= " ".join(command.split())
 
-      intent = detect_intent(command)
+      intent =detect_intent(command)
 
 
       if intent == "TIME":
