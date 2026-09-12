@@ -4,5 +4,6 @@ test_openai.py
 .env
 git
 voice_test.py
+testing.py
 
 
