@@ -3,5 +3,6 @@ data2.txt
 test_openai.py
 .env
 git
+voice_test.py
 
 

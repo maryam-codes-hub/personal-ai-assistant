@@ -4,6 +4,7 @@ import os
 import shutil
 import threading
 import webbrowser
+import speech_recognition as sr
 
 
 def detect_intent(command):
@@ -286,7 +287,26 @@ def open_youtube():
     print("Opening YouTube.....")
     webbrowser.open("https://www.youtube.com/")
 
+def listen_command():
+    recognizer = sr.Recognizer()
 
+    with sr.Microphone() as source:
+        print("Listening...")
+        audio = recognizer.record(source,duration=5)
+        
+
+    try:
+        command = recognizer.recognize_google(audio,language="en-US")
+        print("You said:", command)
+        return command
+
+    except sr.UnknownValueError:
+        print("Sorry, I could not understand.")
+        return None
+
+    except sr.RequestError as e:
+        print("Speech service error:", e)
+        return None
 def search_web(command):
     query = command[7:]
 
@@ -325,11 +345,17 @@ def main():
 
 
    while True:
+      command=input("Enter Command:").lower().strip()
+      if command=="voice":
 
-      command = input("Enter Command:").lower().strip()
-      command= " ".join(command.split())
+       command = listen_command()
+      if command is None:
+          continue
+      
+      command=command.lower().strip()
 
       intent =detect_intent(command)
+    #   print("detected intent:",intent)
 
 
       if intent == "TIME":
